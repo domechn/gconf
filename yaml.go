@@ -4,15 +4,12 @@
 package gconf
 
 import (
-	"sync"
-	"strings"
 	"errors"
 	"fmt"
+	"gopkg.in/yaml.v2"
 	"io/ioutil"
-	"encoding/json"
-	"bytes"
-	"log"
-	"gconf/goyml2"
+	"strings"
+	"sync"
 )
 
 func ReadYmlReader(path string) (cnf map[string]interface{}, err error) {
@@ -28,30 +25,9 @@ func parseYML(buf []byte) (cnf map[string]interface{}, err error) {
 	if len(buf) < 3 {
 		return
 	}
-
-	if string(buf[0:1]) == "{" {
-		log.Println("Look like a Json, try json umarshal")
-		err = json.Unmarshal(buf, &cnf)
-		if err == nil {
-			log.Println("It is Json Map")
-			return
-		}
-	}
-
-	data, err := goyml2.Read(bytes.NewBuffer(buf))
+	err = yaml.Unmarshal(buf, &cnf)
 	if err != nil {
-		log.Println("Goyaml2 ERR>", string(buf), err)
 		return
-	}
-
-	if data == nil {
-		log.Println("Goyaml2 output nil? Pls report bug\n" + string(buf))
-		return
-	}
-	cnf, ok := data.(map[string]interface{})
-	if !ok {
-		log.Println("Not a Map? >> ", string(buf), data)
-		cnf = nil
 	}
 	cnf = expandValueEnvForMap(cnf)
 	return
@@ -63,12 +39,12 @@ type yamlConfig struct {
 func (yc *yamlConfig) parse(filepath string) (Configer, error) {
 	cnf, err := ReadYmlReader(filepath)
 	if err != nil {
-		return nil,err
+		return nil, err
 	}
 	y := &yamlConfigContainer{
 		data: cnf,
 	}
-	return y , nil
+	return y, nil
 }
 
 func (yc *yamlConfig) parseData(data []byte) (Configer, error) {
@@ -76,10 +52,18 @@ func (yc *yamlConfig) parseData(data []byte) (Configer, error) {
 	if err != nil {
 		return nil, err
 	}
-
 	return &yamlConfigContainer{
 		data: cnf,
 	}, nil
+}
+
+func mapInt2MapString(m map[interface{}]interface{}) map[string]interface{} {
+	var res = make(map[string]interface{})
+	for k, v := range m {
+		nk := k.(string)
+		res[nk] = v
+	}
+	return res
 }
 
 type yamlConfigContainer struct {
@@ -97,11 +81,16 @@ func (ycr *yamlConfigContainer) String(key string) string {
 }
 
 func (ycr *yamlConfigContainer) Strings(key string) []string {
-	v := ycr.String(key)
-	if v == "" {
-		return nil
+	if v, err := ycr.getData(key); err == nil {
+		if vv, ok := v.([]interface{}); ok {
+			var res []string
+			for _,r := range vv {
+				res = append(res,r.(string))
+			}
+			return res
+		}
 	}
-	return strings.Split(v, ";")
+	return []string{}
 }
 
 func (ycr *yamlConfigContainer) Int(key string) (int, error) {
@@ -197,7 +186,7 @@ func (ycr *yamlConfigContainer) Interface(key string) (interface{}, error) {
 	return ycr.getData(key)
 }
 
-func (ycr *yamlConfigContainer) getData(key string)(interface{}, error){
+func (ycr *yamlConfigContainer) getData(key string) (interface{}, error) {
 	if key == "" {
 		return nil, errors.New("key is empty")
 	}
@@ -210,16 +199,18 @@ func (ycr *yamlConfigContainer) getData(key string)(interface{}, error){
 		if v, ok := tmpData[k]; ok {
 			switch v.(type) {
 			case map[string]interface{}:
-				{
-					tmpData = v.(map[string]interface{})
-					if idx == len(keys) - 1 {
-						return tmpData, nil
-					}
+				tmpData = v.(map[string]interface{})
+				if idx == len(keys)-1 {
+					return tmpData, nil
+				}
+			case map[interface{}]interface{}:
+				tData := v.(map[interface{}]interface{})
+				tmpData = mapInt2MapString(tData)
+				if idx == len(keys)-1 {
+					return tmpData, nil
 				}
 			default:
-				{
-					return v, nil
-				}
+				return v, nil
 
 			}
 		}
