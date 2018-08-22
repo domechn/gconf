@@ -12,12 +12,11 @@ import (
 	"sync"
 )
 
-func ReadYmlReader(path string) (cnf map[string]interface{}, err error) {
+func readYmlReader(path string) (cnf map[string]interface{}, err error) {
 	buf, err := ioutil.ReadFile(path)
 	if err != nil {
 		return
 	}
-
 	return parseYML(buf)
 }
 
@@ -37,7 +36,7 @@ type yamlConfig struct {
 }
 
 func (yc *yamlConfig) parse(filepath string) (Configer, error) {
-	cnf, err := ReadYmlReader(filepath)
+	cnf, err := readYmlReader(filepath)
 	if err != nil {
 		return nil, err
 	}
