@@ -173,7 +173,7 @@ func (jcr *jsonConfigContainer) getData(key string) interface{} {
 	jcr.RLock()
 	defer jcr.RUnlock()
 
-	sectionKeys := strings.Split(key, "::")
+	sectionKeys := strings.Split(key, ".")
 	if len(sectionKeys) >= 2 {
 		curValue, ok := jcr.data[sectionKeys[0]]
 		if !ok {
