@@ -16,7 +16,7 @@ c.json
 
 ```
 func init(){
-    err := gconf.Register("conffile","/abc/c.json||./c.json||abc/c.json")
+    err := gconf.Register("conffile","/abc/c.json||./c.json||abc/c.json") //如果/abc/c.json不存在就查找./c.json，./c.json不存在就查找abc/c.json
     if err != nil {
         panic(err)
     }
