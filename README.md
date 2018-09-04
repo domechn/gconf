@@ -3,11 +3,11 @@
 将beego中的配置文件读取功能提取出来
 
 c.json
-```
+```json
 {
     "ABC":"a",
     "CCC":12,
-    "B":"abc;asc;as"
+    "B":"abc;asc;as",
     "DD":{
         "DDD":23
     }
@@ -15,6 +15,10 @@ c.json
 ```
 
 ```go
+package testjson
+
+import "github.com/domgoer/gconf"
+
 func init(){
     err := gconf.Register("conffile","/abc/c.json||./c.json||abc/c.json") //如果/abc/c.json不存在就查找./c.json，./c.json不存在就查找abc/c.json
     if err != nil {
@@ -28,18 +32,18 @@ func getConf(){
     if err != nil {
         panic(err)
     }
-    conffile.String("ABC")  => "a"
-    conffile.Int("CCC")   => 12
-    conffile.Strings("B") => []string{"abc","asc","as"}
-    conffile.DefaultString("a","bc") => "bc"
-    conffile.Int("DD.DDD") => 23
+    conffile.String("ABC") // => "a"
+    conffile.Int("CCC")  // => 12
+    conffile.Strings("B") // => []string{"abc","asc","as"}
+    conffile.DefaultString("a","bc") // => "bc"
+    conffile.Int("DD.DDD") // => 23
 }
 ```
 
 
 c.yaml
 
-```
+```yaml
 ABC : 12
 AC :
     BC : 23
@@ -50,20 +54,23 @@ BCD :
 ```
 
 ```go
-    func init(){
-        err := gconf.Register("cyaml",c.yaml")
-        if err != nil {
-                panic(err)
-            }
-    }
-    
-    func getConfig(){
-        cyaml, err := gconf.GetConfiger("cyaml")
-        if err != nil {
-            painc(err)
+package testyml
+import "github.com/domgoer/gconf"
+
+func init(){
+    err := gconf.Register("cyaml","c.yaml")
+    if err != nil {
+            panic(err)
         }
-        cyaml.Int("ABC")  => 12
-        cyaml.Int("AC.BC") => 23
-        cyaml.Strings("BCD") => []string{"a","b","c"}
+}
+
+func getConfig(){
+    cyaml, err := gconf.GetConfiger("cyaml")
+    if err != nil {
+        panic(err)
     }
+    cyaml.Int("ABC")  // => 12
+    cyaml.Int("AC.BC") // => 23
+    cyaml.Strings("BCD") // => []string{"a","b","c"}
+}
 ```
