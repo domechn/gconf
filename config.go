@@ -58,8 +58,14 @@ func Register(alias, filePath string) error {
 			return err
 		}
 		configers[alias] = ycr
+	case "yml":
+		ycr, err := newYamlConfigContainer(filePath)
+		if err != nil {
+			return err
+		}
+		configers[alias] = ycr
 	default:
-		return errors.New("file type error , only support json/yaml")
+		return errors.New("file type error , only support json/yaml/yml")
 	}
 	return nil
 }
