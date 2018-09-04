@@ -85,7 +85,7 @@ package testyml
 import "github.com/domgoer/gconf"
 
 type sRead struct{
-	User     string                 `json:"user"`
+    User     string                 `json:"user"`
     Password string                 `json:"password"`
     Sex      int                    `json:"sex"`
     Married  bool                   `json:"married"`
