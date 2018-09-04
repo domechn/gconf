@@ -44,13 +44,16 @@ func getConf(){
 c.yaml
 
 ```yaml
-ABC : 12
-AC :
-    BC : 23
-BCD :
-    - "a"
-    - "b"
-    - "c"
+user : domgoer
+password : qq123456
+sex: 1
+married: false
+ts:
+  tss : dd
+tlist :
+  - a
+  - b
+  - c
 ```
 
 ```go
@@ -69,8 +72,50 @@ func getConfig(){
     if err != nil {
         panic(err)
     }
-    cyaml.Int("ABC")  // => 12
-    cyaml.Int("AC.BC") // => 23
-    cyaml.Strings("BCD") // => []string{"a","b","c"}
+    cyaml.String("user") // => domgoer
+    cyaml.Int("sex")  // => 1
+    cyaml.Bool("married") // => false
+    cyaml.String("ts.tss") //=>dd
+    cyaml.Strings("tlist") //=>[]string{"a","b","c"}
+}
+```
+
+```go
+package testyml
+import "github.com/domgoer/gconf"
+
+type sRead struct{
+	User     string                 `json:"user"`
+    Password string                 `json:"password"`
+    Sex      int                    `json:"sex"`
+    Married  bool                   `json:"married"`
+    Ts       map[string]interface{} `json:"ts"`
+    Tlist    []string               `json:"tlist"`
+} 
+
+func init(){
+    err := gconf.Register("cyaml","c.yaml")
+    if err != nil {
+            panic(err)
+        }
+}
+
+func getConfig(){
+    cyaml, err := gconf.GetConfiger("cyaml")
+    if err != nil {
+        panic(err)
+    }
+    sr := &sRead{}
+    gconf.Read2Struct(cyaml,sr)
+    /*
+        &sRead{
+            User:     "domgoer",
+            Password: "qq123456",
+            Sex:      1,
+            Married:  false,
+            Ts:       map[string]interface{}{"tss": "dd"},
+            Tlist:    []string{"a", "b", "c"},
+        }
+    */
 }
 ```
