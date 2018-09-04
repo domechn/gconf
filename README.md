@@ -91,6 +91,7 @@ type sRead struct{
     Married  bool                   `json:"married"`
     Ts       map[string]interface{} `json:"ts"`
     Tlist    []string               `json:"tlist"`
+    Default  int                    `json:"default"  default_value:"12"`
 } 
 
 func init(){
@@ -115,6 +116,7 @@ func getConfig(){
             Married:  false,
             Ts:       map[string]interface{}{"tss": "dd"},
             Tlist:    []string{"a", "b", "c"},
+            Default:  1,
         }
     */
 }
