@@ -32,7 +32,7 @@ func Read2Struct(cf Configer, out interface{}) error {
 	r2s := &read2struct{cf: cf}
 	rv := reflect.ValueOf(out)
 	if rv.Kind() != reflect.Ptr || rv.IsNil() {
-		return errors.New("invaild received param ...")
+		return errors.New("invaild received param , need ptr")
 	}
 
 	err := r2s.value(rv)
