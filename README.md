@@ -91,7 +91,7 @@ type sRead struct{
     Married  bool                   `json:"married"`
     Ts       map[string]interface{} `json:"ts"`
     Tlist    []string               `json:"tlist"`
-    Default  int                    `json:"default"  default_value:"12"`
+    Default  int                    `json:"default"  default:"12"`
 } 
 
 func init(){

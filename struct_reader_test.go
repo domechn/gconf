@@ -20,14 +20,14 @@ type sRead struct {
 }
 
 func init() {
-	err := Register("ymlRead", "./test_file/test.yml")
-	if err != nil {
-		panic(err)
-	}
-	err = Register("jsonRead", "./test_file/test.json")
-	if err != nil {
-		panic(err)
-	}
+	//err := Register("ymlRead", "./test_file/test.yml")
+	//if err != nil {
+	//	panic(err)
+	//}
+	//err = Register("jsonRead", "./test_file/test.json")
+	//if err != nil {
+	//	panic(err)
+	//}
 }
 
 var testCase = []struct {
