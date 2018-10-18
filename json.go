@@ -4,25 +4,19 @@
 package gconf
 
 import (
-	"io/ioutil"
-	"os"
-	"sync"
 	"encoding/json"
-	"strings"
 	"errors"
 	"fmt"
+	"io/ioutil"
+	"strings"
+	"sync"
 )
 
 type jsonConfig struct {
 }
 
-func (jc *jsonConfig) parse(filepath string) (Configer, error) {
-	file, err := os.Open(filepath)
-	if err != nil {
-		return nil, err
-	}
-	defer file.Close()
-	content, err := ioutil.ReadAll(file)
+func (jc *jsonConfig) parse(filePath string) (Configer, error) {
+	content, err := ioutil.ReadFile(filePath)
 	if err != nil {
 		return nil, err
 	}
