@@ -1,7 +1,5 @@
 # gconf
 
-将beego中的配置文件读取功能提取出来
-
 c.json
 ```json
 {
