@@ -27,7 +27,7 @@ type read2struct struct {
 	cf Configer
 }
 
-//将配置信息读取到结构体(暂时不支持组合)
+// Read2Struct 将配置信息读取到结构体(暂时不支持组合)
 func Read2Struct(cf Configer, out interface{}) error {
 	r2s := &read2struct{cf: cf}
 	rv := reflect.ValueOf(out)
