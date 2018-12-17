@@ -52,13 +52,7 @@ func Register(alias, filePath string) error {
 			return err
 		}
 		configers[alias] = jcr
-	case "yaml":
-		ycr, err := newYamlConfigContainer(filePath)
-		if err != nil {
-			return err
-		}
-		configers[alias] = ycr
-	case "yml":
+	case "yaml", "yml":
 		ycr, err := newYamlConfigContainer(filePath)
 		if err != nil {
 			return err
