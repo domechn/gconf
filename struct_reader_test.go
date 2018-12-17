@@ -1,8 +1,8 @@
-//Author : dmc
+// Author : dmc
 //
-//Date: 2018/9/4 上午10:28
+// Date: 2018/9/4 上午10:28
 //
-//Description:
+// Description:
 package gconf
 
 import (
@@ -11,23 +11,26 @@ import (
 )
 
 type sRead struct {
-	User     string                 `json:"user"`
+	User     string                 `json:"user" default:"hello"`
 	Password string                 `json:"password"`
 	Sex      int                    `json:"sex"`
 	Married  bool                   `json:"married"`
 	Ts       map[string]interface{} `json:"ts"`
 	Tlist    []string               `json:"tlist"`
+	Tll      struct {
+		Tlll int `json:"tlll"`
+	} `json:"tll"`
 }
 
 func init() {
-	//err := Register("ymlRead", "./test_file/test.yml")
-	//if err != nil {
-	//	panic(err)
-	//}
-	//err = Register("jsonRead", "./test_file/test.json")
-	//if err != nil {
-	//	panic(err)
-	//}
+	// err := Register("ymlRead", "./test_file/test.yml")
+	// if err != nil {
+	// 	panic(err)
+	// }
+	// err = Register("jsonRead", "./test_file/test.json")
+	// if err != nil {
+	// 	panic(err)
+	// }
 }
 
 var testCase = []struct {
@@ -41,26 +44,22 @@ var testCase = []struct {
 			Married:  false,
 			Ts:       map[string]interface{}{"tss": "dd"},
 			Tlist:    []string{"a", "b", "c"},
+			Tll: struct {
+				Tlll int `json:"tlll"`
+			}{Tlll: 123},
 		},
 	},
 }
 
 func TestRead2Struct(t *testing.T) {
-	ymlRead, err := GetConfiger("ymlRead")
-	if err != nil {
-		panic(err)
-	}
-	jsonRead, err := GetConfiger("jsonRead")
 	yRead := &sRead{}
 	jRead := &sRead{}
-	Read2Struct(ymlRead, yRead)
-	Read2Struct(jsonRead, jRead)
+	Read2Struct("./test_file/test.yml", yRead)
+	Read2Struct("./test_file/test.json", jRead)
 	for _, v := range testCase {
 		flag := compare(yRead, v.want)
 		if !flag {
-			fmt.Println(v)
-			fmt.Println(yRead)
-			fmt.Println(jRead)
+			fmt.Printf("123,%+v\n", jRead)
 			t.Errorf("Read2Struct() appear error")
 		}
 	}

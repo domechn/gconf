@@ -2,9 +2,12 @@
   "user":"domgoer",
   "password":"qq123456",
   "sex":1,
-  "married":"false",
+  "married":false,
   "ts":{
     "tss":"dd"
   },
-  "tlist":"a;b;c"
+  "tlist":["a","b","c"],
+  "tll":{
+    "tlll":123
+  }
 }

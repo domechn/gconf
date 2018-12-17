@@ -100,12 +100,9 @@ func init(){
 }
 
 func getConfig(){
-    cyaml, err := gconf.GetConfiger("cyaml")
-    if err != nil {
-        panic(err)
-    }
     sr := &sRead{}
-    gconf.Read2Struct(cyaml,sr)
+    // 不需要init
+    gconf.Read2Struct("filepath",sr)
     /*
         &sRead{
             User:     "domgoer",
