@@ -15,7 +15,7 @@ c.json
 ```go
 package testjson
 
-import "github.com/domgoer/gconf"
+import "github.com/hiruok/gconf"
 
 func init(){
     err := gconf.Register("conffile","/abc/c.json||./c.json||abc/c.json") //如果/abc/c.json不存在就查找./c.json，./c.json不存在就查找abc/c.json
@@ -56,7 +56,7 @@ tlist :
 
 ```go
 package testyml
-import "github.com/domgoer/gconf"
+import "github.com/hiruok/gconf"
 
 func init(){
     err := gconf.Register("cyaml","c.yaml")
@@ -80,7 +80,7 @@ func getConfig(){
 
 ```go
 package testyml
-import "github.com/domgoer/gconf"
+import "github.com/hiruok/gconf"
 
 type sRead struct{
     User     string                 `json:"user"`
