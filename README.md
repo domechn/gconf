@@ -92,13 +92,6 @@ type sRead struct{
     Default  int                    `json:"default"  default:"12"`
 } 
 
-func init(){
-    err := gconf.Register("cyaml","c.yaml")
-    if err != nil {
-            panic(err)
-        }
-}
-
 func getConfig(){
     sr := &sRead{}
     // 不需要init
