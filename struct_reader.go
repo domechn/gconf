@@ -30,12 +30,32 @@ type read2Struct struct {
 	rv reflect.Value
 }
 
-// Read2Struct 将配置信息读取到结构体(暂时不支持组合)
+// Read2Struct 将配置信息读取到结构体,不使用默认值
 func Read2Struct(path string, out interface{}) error {
 	rv := reflect.ValueOf(out)
 	if rv.Kind() != reflect.Ptr || rv.IsNil() {
 		return errors.New("invaild received param , need ptr")
 	}
+	return read(path, out)
+}
+
+// Read2StructByDefault 将配置信息读取到结构体,使用默认值
+func Read2StructByDefault(path string, out interface{}) error {
+	rv := reflect.ValueOf(out)
+	if rv.Kind() != reflect.Ptr || rv.IsNil() {
+		return errors.New("invaild received param , need ptr")
+	}
+	err := read(path, out)
+	if err != nil {
+		return err
+	}
+	rs := read2Struct{
+		rv: rv,
+	}
+	return rs.value(out)
+}
+
+func read(path string, out interface{}) error {
 	b, err := ioutil.ReadFile(path)
 	if err != nil {
 		return err
@@ -52,10 +72,7 @@ func Read2Struct(path string, out interface{}) error {
 	if err != nil {
 		return err
 	}
-	rs := read2Struct{
-		rv: rv,
-	}
-	return rs.value(out)
+	return nil
 }
 
 func (r *read2Struct) value(out interface{}) error {

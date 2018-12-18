@@ -111,8 +111,20 @@ func getConfig(){
             Married:  false,
             Ts:       map[string]interface{}{"tss": "dd"},
             Tlist:    []string{"a", "b", "c"},
-            Default:  1,
+            Default:  0,
         }
     */
+    gconf.Read2StructByDefault("filepath",sr)
+    /*
+            &sRead{
+                User:     "domgoer",
+                Password: "qq123456",
+                Sex:      1,
+                Married:  false,
+                Ts:       map[string]interface{}{"tss": "dd"},
+                Tlist:    []string{"a", "b", "c"},
+                Default:  1,
+            }
+        */
 }
 ```

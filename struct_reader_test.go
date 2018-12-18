@@ -27,10 +27,10 @@ func init() {
 	// if err != nil {
 	// 	panic(err)
 	// }
-	// err = Register("jsonRead", "./test_file/test.json")
-	// if err != nil {
-	// 	panic(err)
-	// }
+	err := Register("jsonRead", "./test_file/test.json")
+	if err != nil {
+		panic(err)
+	}
 }
 
 var testCase = []struct {
@@ -54,12 +54,12 @@ var testCase = []struct {
 func TestRead2Struct(t *testing.T) {
 	yRead := &sRead{}
 	jRead := &sRead{}
-	Read2Struct("./test_file/test.yml", yRead)
+	Read2StructByDefault("./test_file/test.yml", yRead)
 	Read2Struct("./test_file/test.json", jRead)
 	for _, v := range testCase {
 		flag := compare(yRead, v.want)
 		if !flag {
-			fmt.Printf("123,%+v\n", jRead)
+			fmt.Printf("123,%+v\n", yRead)
 			t.Errorf("Read2Struct() appear error")
 		}
 	}

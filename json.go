@@ -1,6 +1,6 @@
-//Date: 2018/8/22 下午3:19
+// Date: 2018/8/22 下午3:19
 //
-//Description:
+// Description:
 package gconf
 
 import (
@@ -58,12 +58,18 @@ func (jcr *jsonConfigContainer) String(key string) string {
 	return ""
 }
 
-func (jcr *jsonConfigContainer) Strings(key string) []string {
-	stringVal := jcr.String(key)
-	if stringVal == "" {
-		return nil
+func (jcr *jsonConfigContainer) Strings(key string) (res []string) {
+	val := jcr.getData(key)
+	if val != nil {
+		if vv, ok := val.([]interface{}); ok {
+			for _, v := range vv {
+				if str, strOK := v.(string); strOK {
+					res = append(res, str)
+				}
+			}
+		}
 	}
-	return strings.Split(jcr.String(key), ";")
+	return
 }
 
 func (jcr *jsonConfigContainer) Int(key string) (int, error) {
@@ -157,7 +163,6 @@ func (jcr *jsonConfigContainer) Interface(key string) (interface{}, error) {
 	return nil, errors.New("not exist key")
 }
 
-
 // section.key or key
 func (jcr *jsonConfigContainer) getData(key string) interface{} {
 	if len(key) == 0 {
@@ -188,7 +193,7 @@ func (jcr *jsonConfigContainer) getData(key string) interface{} {
 	return nil
 }
 
-func newJsonConfigContainer(filePath string) (Configer ,error){
+func newJsonConfigContainer(filePath string) (Configer, error) {
 	j := &jsonConfig{}
 	return j.parse(filePath)
 }
