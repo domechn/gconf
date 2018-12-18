@@ -5,7 +5,7 @@ c.json
 {
     "ABC":"a",
     "CCC":12,
-    "B":"abc;asc;as",
+    "B":["abc","asc","as"],
     "DD":{
         "DDD":23
     }
