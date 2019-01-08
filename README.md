@@ -83,13 +83,13 @@ package testyml
 import "github.com/hiruok/gconf"
 
 type sRead struct{
-    User     string                 `json:"user"`
-    Password string                 `json:"password"`
-    Sex      int                    `json:"sex"`
-    Married  bool                   `json:"married"`
-    Ts       map[string]interface{} `json:"ts"`
-    Tlist    []string               `json:"tlist"`
-    Default  int                    `json:"default"  default:"12"`
+    User     string                 `yaml:"user"`
+    Password string                 `yaml:"password"`
+    Sex      int                    `yaml:"sex"`
+    Married  bool                   `yaml:"married"`
+    Ts       map[string]interface{} `yaml:"ts"`
+    Tlist    []string               `yaml:"tlist"`
+    Default  int                    `yaml:"default"  default:"12"`
 } 
 
 func getConfig(){
